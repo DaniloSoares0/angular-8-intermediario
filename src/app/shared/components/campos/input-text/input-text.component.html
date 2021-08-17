@@ -2,7 +2,9 @@
   <mat-form-field class="full-width">
     <input matInput [placeholder]="titulo" [name]="controlName" [formControlName]="controlName">
     <mat-error *ngIf="validacao.hasErrorValidade(formControl, 'required')">Campo obrigatório</mat-error>
-    <mat-error *ngIf="validacao.hasErrorValidade(formControl, 'minlength')">Minimo 2 caracteres</mat-error>
-    <mat-error *ngIf="validacao.hasErrorValidade(formControl, 'maxlength')">Maximo 2 caracteres</mat-error>
+    <mat-error *ngIf="validacao.hasErrorValidade(formControl, 'minlength')"> Campo precisa ter no minimo o valor
+      {{validacao.lengthValidar(formControl,'minlength')}}</mat-error>
+    <mat-error *ngIf="validacao.hasErrorValidade(formControl, 'maxlength')"> Campo precisa ter no maximo o valor
+      {{validacao.lengthValidar(formControl,'maxlength')}}</mat-error>
   </mat-form-field>
 </div>
