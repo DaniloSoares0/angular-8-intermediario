@@ -1,8 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilmesService } from 'src/app/core/fimes.service';
 import { ConfigParams } from 'src/app/shared/models/config-params';
 import { Filme } from 'src/app/shared/models/filme';
+import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dio-listagem-filmes',
@@ -11,6 +13,7 @@ import { Filme } from 'src/app/shared/models/filme';
 })
 export class ListagemFilmesComponent implements OnInit {
 
+  readonly semFoto = 'https://www.buritama.sp.leg.br/imagens/parlamentares-2013-2016/sem-foto.jpg/image_view_fullscreen';
 
   config: ConfigParams = {
     pagina: 0,
@@ -20,7 +23,7 @@ export class ListagemFilmesComponent implements OnInit {
   fitrosListagem: FormGroup
   generos: Array<String>
 
-  constructor(private filmesService: FilmesService, private fb: FormBuilder) { }
+  constructor(private filmesService: FilmesService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.fitrosListagem = this.fb.group({
@@ -28,10 +31,12 @@ export class ListagemFilmesComponent implements OnInit {
       genero: ['']
     });
 
-    this.fitrosListagem.get('texto').valueChanges.subscribe((val: string) => {
-      this.config.pesquisa = val;
-      this.resetarConsulta();
-    })
+    this.fitrosListagem.get('texto').valueChanges
+      .pipe(debounceTime(400))
+      .subscribe((val: string) => {
+        this.config.pesquisa = val;
+        this.resetarConsulta();
+      })
 
     this.fitrosListagem.get('genero').valueChanges.subscribe((val: string) => {
       this.config.campo = { tipo: 'genero', valor: val };
@@ -47,6 +52,9 @@ export class ListagemFilmesComponent implements OnInit {
     this.listarFilmes();
   }
 
+  open(id: number): void {
+    this.router.navigateByUrl('/filmes/' + id)
+  }
   private listarFilmes(): void {
     this.config.pagina++;
     this.filmesService.listar(this.config)
@@ -59,6 +67,7 @@ export class ListagemFilmesComponent implements OnInit {
     this.listarFilmes()
   }
 
-  open() {
-  }
+
 }
+
+
