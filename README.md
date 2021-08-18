@@ -1,6 +1,6 @@
 # Curso Intermediário de Angular 
 
-O curso consiste em um sistema de filmes, com a possibilidade de cadastros, edições, listagem e visualização dos cursos de outros usuários.
+O curso consiste em um sistema de filmes, com a possibilidade de cadastros, edições, listagem e visualização.
 
 ## Instalação
 
