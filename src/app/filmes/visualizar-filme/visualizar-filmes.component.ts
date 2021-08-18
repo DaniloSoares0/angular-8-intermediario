@@ -39,8 +39,9 @@ export class VisualizarFilmesComponent implements OnInit {
       }
     })
   }
-  reiniciarForm() {
-    throw new Error('Method not implemented.');
+
+  editar(): void {
+    this.router.navigateByUrl('/filmes/cadastro/' + this.id)
   }
 
   private visualizar(): void {
